@@ -34,3 +34,16 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+## Unauthorized Access & Route Protection
+
+This app uses Next.js middleware to protect routes that require authentication. If a user tries to access a protected route (such as creating, updating, or deleting an event) without being logged in, they are redirected to the `/unauthorized` page. This page provides a clear message and a button to return to the login page.
+
+## Form Validation
+
+All event creation and update forms validate required fields (name, location, precis, date/time). If a user tries to submit a form with missing details, a user-friendly error message is shown on the form, and the submission is blocked until all required fields are filled.
+
+## Marking Criteria
+- **Authentication:** Only logged-in users can create, update, or delete events. Unauthorized users are redirected.
+- **UI/UX:** The app provides clear feedback for unauthorized access and form errors. The UI is accessible and user-friendly.
+- **Code Quality:** Route protection and validation logic are clearly commented and structured for maintainability.

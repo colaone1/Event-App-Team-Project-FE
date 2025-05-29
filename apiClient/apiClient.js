@@ -1,4 +1,5 @@
 import axios from "axios";
+import Cookies from 'js-cookie';
 const url = "http://localhost:3001/";
 
 export class ApiClient {
@@ -38,15 +39,15 @@ export class ApiClient {
   }
 
   getToken() {
-    return localStorage.getItem('token');
+    return Cookies.get('token');
   }
 
   setToken(token) {
-    localStorage.setItem('token', token);
+    Cookies.set('token', token, { expires: 7 }); // Token expires in 7 days
   }
 
   removeToken() {
-    localStorage.removeItem('token');
+    Cookies.remove('token');
   }
 
   isLoggedIn() {
@@ -81,6 +82,7 @@ export class ApiClient {
 
   logout() {
     this.removeToken();
+    window.location.href = '/user';
   }
 
   async getAds() {
