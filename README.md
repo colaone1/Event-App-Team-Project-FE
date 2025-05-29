@@ -47,3 +47,33 @@ Event creation and update forms include validation to ensure all required fields
 - **Authentication:** Only logged-in users can create, update, or delete events. Unauthorized users are redirected.
 - **UI/UX:** The app provides clear feedback for unauthorized access and form errors. The UI is accessible and user-friendly.
 - **Code Quality:** Route protection and validation logic are clearly commented and structured for maintainability.
+
+# Events App Frontend
+
+## Accessibility
+
+- All interactive elements have `aria-label`s for screen readers.
+- SPA navigation is used throughout for a seamless experience.
+- Forms use semantic HTML and proper labels.
+- The UI is fully keyboard accessible and visually clear.
+
+## Testing
+
+- Unit tests are written with Jest and React Testing Library.
+- Tests cover form validation and event deletion.
+- To run tests: `npm test`
+- Manual UI testing was performed for all CRUD flows.
+
+## Backend Integration
+
+- The API client is ready to connect to your backend at `http://localhost:3001/` (or your deployed API URL).
+- To change the API URL, update the `url` variable in `apiClient/apiClient.js`.
+
+## Deployment
+
+- Deploy to Vercel or Netlify for a professional URL.
+- Example: [Vercel Deployment Guide](https://vercel.com/docs/concepts/deployments/overview)
+
+---
+
+For any questions or issues, please refer to the documentation or contact the development team.

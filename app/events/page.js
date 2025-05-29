@@ -2,18 +2,20 @@
 
 import { useEffect, useState } from "react";
 import { ApiClient } from "../../apiClient/apiClient";
+import { useRouter } from "next/navigation";
 
 export default function EventsPage() {
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const router = useRouter();
 
   useEffect(() => {
     const fetchEvents = async () => {
       try {
         const apiClient = new ApiClient();
         if (!apiClient.isLoggedIn()) {
-          window.location.href = "/unauthorized";
+          router.push("/unauthorized");
           return;
         }
         const response = await apiClient.getEvents();
@@ -29,7 +31,7 @@ export default function EventsPage() {
     };
 
     fetchEvents();
-  }, []);
+  }, [router]);
 
   if (loading) {
     return (
@@ -45,7 +47,7 @@ export default function EventsPage() {
         <div className="text-red-600 text-center">
           <p className="text-xl font-semibold mb-4">{error}</p>
           <button
-            onClick={() => window.location.reload()}
+            onClick={() => router.refresh()}
             className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
           >
             Try Again
@@ -97,17 +99,19 @@ export default function EventsPage() {
                 </div>
                 <div className="flex justify-between items-center mt-4">
                   <button
-                    onClick={() => window.location.href = `/events/${event._id}/edit`}
+                    aria-label={`Edit event ${event.title}`}
+                    onClick={() => router.push(`/events/${event._id}/edit`)}
                     className="px-4 py-2 bg-yellow-500 text-white rounded-lg font-medium hover:bg-yellow-600 transition-colors mr-2"
                   >
                     Edit
                   </button>
                   <button
+                    aria-label={`Delete event ${event.title}`}
                     onClick={async () => {
                       if (confirm('Are you sure you want to delete this event?')) {
                         const apiClient = new ApiClient();
                         await apiClient.deleteEvent(event._id);
-                        window.location.reload();
+                        router.refresh();
                       }
                     }}
                     className="px-4 py-2 bg-red-600 text-white rounded-lg font-medium hover:bg-red-700 transition-colors"

@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { ApiClient } from '../../apiClient/apiClient';
+import { useRouter } from 'next/navigation';
 
 export default function CreateEvent() {
   const [formData, setFormData] = useState({
@@ -12,13 +13,14 @@ export default function CreateEvent() {
   const [errors, setErrors] = useState({});
   const [success, setSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
+  const router = useRouter();
 
   useEffect(() => {
     const apiClient = new ApiClient();
     if (!apiClient.isLoggedIn()) {
-      window.location.href = '/unauthorized';
+      router.push('/unauthorized');
     }
-  }, []);
+  }, [router]);
 
   const validateForm = () => {
     const newErrors = {};
