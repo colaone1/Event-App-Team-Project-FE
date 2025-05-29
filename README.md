@@ -41,7 +41,7 @@ This app uses Next.js middleware to protect routes that require authentication. 
 
 ## Form Validation
 
-All event creation and update forms validate required fields (name, location, precis, date/time). If a user tries to submit a form with missing details, a user-friendly error message is shown on the form, and the submission is blocked until all required fields are filled.
+Event creation and update forms include validation to ensure all required fields are filled out and valid. Users receive clear feedback if any information is missing or incorrect.
 
 ## Marking Criteria
 - **Authentication:** Only logged-in users can create, update, or delete events. Unauthorized users are redirected.

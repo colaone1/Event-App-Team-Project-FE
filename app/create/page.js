@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { ApiClient } from '../../apiClient/apiClient';
 
-export default function CreateAd() {
+export default function CreateEvent() {
   const [formData, setFormData] = useState({
     title: '',
     description: '',
@@ -53,14 +53,14 @@ export default function CreateAd() {
     setLoading(true);
     try {
       const apiClient = new ApiClient();
-      await apiClient.createAd({
+      await apiClient.createEvent({
         ...formData,
         price: Number(formData.price)
       });
       setSuccess(true);
       setFormData({ title: '', description: '', price: '' });
     } catch (error) {
-      setErrors({ submit: error.message || 'Failed to create ad' });
+      setErrors({ submit: error.message || 'Failed to create event' });
     } finally {
       setLoading(false);
     }
@@ -73,10 +73,10 @@ export default function CreateAd() {
           <div className="max-w-md mx-auto">
             <div className="divide-y divide-gray-200">
               <div className="py-8 text-base leading-6 space-y-4 text-gray-700 sm:text-lg sm:leading-7">
-                <h2 className="text-2xl font-bold mb-8 text-center">Create New Ad</h2>
+                <h2 className="text-2xl font-bold mb-8 text-center">Create New Event</h2>
                 {success && (
                   <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4">
-                    Ad created successfully!
+                    Event created successfully!
                   </div>
                 )}
                 {errors.submit && (
@@ -133,7 +133,7 @@ export default function CreateAd() {
                       disabled={loading}
                       className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50"
                     >
-                      {loading ? 'Creating...' : 'Create Ad'}
+                      {loading ? 'Creating...' : 'Create Event'}
                     </button>
                   </div>
                 </form>

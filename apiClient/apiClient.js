@@ -85,45 +85,46 @@ export class ApiClient {
     window.location.href = '/user';
   }
 
-  async getAds() {
+  // EVENTS API METHODS
+  async getEvents() {
     try {
-      const response = await this.axiosInstance.get(`${url}ads`);
+      const response = await this.axiosInstance.get(`${url}events`);
       return response.data;
     } catch (error) {
       throw error.response?.data || error.message;
     }
   }
 
-  async getAd(id) {
+  async getEvent(id) {
     try {
-      const response = await this.axiosInstance.get(`${url}ads/${id}`);
+      const response = await this.axiosInstance.get(`${url}events/${id}`);
       return response.data;
     } catch (error) {
       throw error.response?.data || error.message;
     }
   }
 
-  async createAd(adData) {
+  async createEvent(eventData) {
     try {
-      const response = await this.axiosInstance.post(`${url}ads`, adData);
+      const response = await this.axiosInstance.post(`${url}events`, eventData);
       return response.data;
     } catch (error) {
       throw error.response?.data || error.message;
     }
   }
 
-  async updateAd(id, adData) {
+  async updateEvent(id, eventData) {
     try {
-      const response = await this.axiosInstance.put(`${url}ads/${id}`, adData);
+      const response = await this.axiosInstance.put(`${url}events/${id}`, eventData);
       return response.data;
     } catch (error) {
       throw error.response?.data || error.message;
     }
   }
 
-  async deleteAd(id) {
+  async deleteEvent(id) {
     try {
-      const response = await this.axiosInstance.delete(`${url}ads/${id}`);
+      const response = await this.axiosInstance.delete(`${url}events/${id}`);
       return response.data;
     } catch (error) {
       throw error.response?.data || error.message;
