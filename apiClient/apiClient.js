@@ -28,11 +28,9 @@ export class ApiClient {
     this.axiosInstance.interceptors.response.use(
       (response) => response,
       (error) => {
-        if (error.response && error.response.status === 401) {
-          this.removeToken();
-          if (typeof window !== 'undefined') {
-            window.location.href = '/unauthorized';
-          }
+        if (error.response?.status === 401) {
+          this.logout();
+          window.location.href = '/unauthorized';
         }
         return Promise.reject(error);
       }
@@ -40,106 +38,93 @@ export class ApiClient {
   }
 
   getToken() {
-    if (typeof window !== 'undefined') {
-      const token = localStorage.getItem('authToken');
-      return token;
-    }
-    return null;
+    return localStorage.getItem('token');
   }
 
   setToken(token) {
-    if (typeof window !== 'undefined') {
-      localStorage.setItem('authToken', token);
-      // Update axios default headers
-      this.axiosInstance.defaults.headers['Authorization'] = `Bearer ${token}`;
-    }
+    localStorage.setItem('token', token);
   }
 
   removeToken() {
-    if (typeof window !== 'undefined') {
-      localStorage.removeItem('authToken');
-      delete this.axiosInstance.defaults.headers['Authorization'];
-    }
+    localStorage.removeItem('token');
   }
 
   isLoggedIn() {
-    const isLoggedIn = !!this.getToken();
-    return isLoggedIn;
-  }
-
-  async apiCall(method, url, data) {
-    try {
-      const response = await this.axiosInstance({
-        method,
-        url,
-        data,
-      });
-      return response;
-    } catch (error) {
-      console.error('API call error:', error.response || error); // Debug log
-      if (error.response && error.response.status === 401) {
-        this.removeToken();
-        if (typeof window !== 'undefined') {
-          window.location.href = '/unauthorized';
-        }
-      }
-      throw error;
-    }
-  }
-
-  async getAds() {
-    try {
-      const response = await this.apiCall("get", url + "ads");
-      return response;
-    } catch (error) {
-      throw error;
-    }
-  }
-
-  async addAd(title, description, price) {
-    try {
-      const numericPrice = Number(price);
-      if (isNaN(numericPrice)) {
-        throw new Error('Price must be a valid number');
-      }
-      return this.apiCall("post", url + "ads", { 
-        title, 
-        description, 
-        price: numericPrice 
-      });
-    } catch (error) {
-      console.error('addAd error:', error.response || error); // Debug log
-      throw error;
-    }
-  }
-
-  async removeAd(id) {
-    return this.apiCall("delete", `${url}ads/${id}`);
-  }
-
-  async updateAd(id, title, description, price) {
-    return this.apiCall("put", `${url}ads/${id}`, { title, description, price });
+    return !!this.getToken();
   }
 
   async login(email, password) {
     try {
-      const response = await this.apiCall("post", url + "auth/login", { email, password });
-      
-      if (response.data && response.data.token) {
-        this.setToken(response.data.token);
-        return response;
-      } else {
-        throw new Error('No token received from server');
-      }
+      const response = await this.axiosInstance.post(`${url}auth/login`, {
+        email,
+        password
+      });
+      this.setToken(response.data.token);
+      return response.data;
     } catch (error) {
-      throw error;
+      throw error.response?.data || error.message;
+    }
+  }
+
+  async register(email, password) {
+    try {
+      const response = await this.axiosInstance.post(`${url}auth/register`, {
+        email,
+        password
+      });
+      this.setToken(response.data.token);
+      return response.data;
+    } catch (error) {
+      throw error.response?.data || error.message;
     }
   }
 
   logout() {
     this.removeToken();
-    if (typeof window !== 'undefined') {
-      window.location.href = '/user';
+  }
+
+  async getAds() {
+    try {
+      const response = await this.axiosInstance.get(`${url}ads`);
+      return response.data;
+    } catch (error) {
+      throw error.response?.data || error.message;
+    }
+  }
+
+  async getAd(id) {
+    try {
+      const response = await this.axiosInstance.get(`${url}ads/${id}`);
+      return response.data;
+    } catch (error) {
+      throw error.response?.data || error.message;
+    }
+  }
+
+  async createAd(adData) {
+    try {
+      const response = await this.axiosInstance.post(`${url}ads`, adData);
+      return response.data;
+    } catch (error) {
+      throw error.response?.data || error.message;
+    }
+  }
+
+  async updateAd(id, adData) {
+    try {
+      const response = await this.axiosInstance.put(`${url}ads/${id}`, adData);
+      return response.data;
+    } catch (error) {
+      throw error.response?.data || error.message;
+    }
+  }
+
+  async deleteAd(id) {
+    try {
+      const response = await this.axiosInstance.delete(`${url}ads/${id}`);
+      return response.data;
+    } catch (error) {
+      throw error.response?.data || error.message;
     }
   }
 }
