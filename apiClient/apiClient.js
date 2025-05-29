@@ -113,6 +113,7 @@ export class ApiClient {
     }
   }
 
+  // Update an event by ID
   async updateEvent(id, eventData) {
     try {
       const response = await this.axiosInstance.put(`${url}events/${id}`, eventData);
@@ -122,6 +123,7 @@ export class ApiClient {
     }
   }
 
+  // Delete an event by ID
   async deleteEvent(id) {
     try {
       const response = await this.axiosInstance.delete(`${url}events/${id}`);
