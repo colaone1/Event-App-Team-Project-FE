@@ -95,6 +95,26 @@ export default function EventsPage() {
                     {new Date(event.createdAt).toLocaleDateString()}
                   </span>
                 </div>
+                <div className="flex justify-between items-center mt-4">
+                  <button
+                    onClick={() => window.location.href = `/events/${event._id}/edit`}
+                    className="px-4 py-2 bg-yellow-500 text-white rounded-lg font-medium hover:bg-yellow-600 transition-colors mr-2"
+                  >
+                    Edit
+                  </button>
+                  <button
+                    onClick={async () => {
+                      if (confirm('Are you sure you want to delete this event?')) {
+                        const apiClient = new ApiClient();
+                        await apiClient.deleteEvent(event._id);
+                        window.location.reload();
+                      }
+                    }}
+                    className="px-4 py-2 bg-red-600 text-white rounded-lg font-medium hover:bg-red-700 transition-colors"
+                  >
+                    Delete
+                  </button>
+                </div>
               </div>
               <div className="px-6 py-4 bg-gray-50 dark:bg-gray-700 border-t border-gray-100 dark:border-gray-600">
                 <form action="/api/contact" method="POST">
